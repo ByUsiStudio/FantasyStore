@@ -10,7 +10,20 @@ import uuid
 import hashlib
 import os
 import platform
+import time
 from datetime import timedelta, datetime
+from rich.console import Console
+from rich.logging import RichHandler
+from rich.panel import Panel
+import logging
+
+logging.basicConfig(
+    level="INFO",
+    format="%(message)s",
+    handlers=[RichHandler(rich_tracebacks=True, show_time=True, show_path=False)]
+)
+log = logging.getLogger("rich")
+console = Console()
 
 def clear_screen():
     os.system('cls' if platform.system() == 'Windows' else 'clear')
@@ -39,11 +52,34 @@ from crud import (
 from admin import router as admin_router
 
 # 初始化
+log.info("Initializing database...")
 init_db()
+log.info("Initializing OAuth...")
 init_oauth()
+log.info("Initializing WebDAV client...")
 init_webdav_client()
 
 app = FastAPI(title="App Store API", version="1.0.0")
+
+# 请求日志中间件
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    method = request.method
+    path = request.url.path
+    client = request.client.host if request.client else "unknown"
+    
+    try:
+        response = await call_next(request)
+        process_time = round((time.time() - start_time) * 1000, 2)
+        status_code = response.status_code
+        status_color = "green" if status_code < 400 else "red" if status_code >= 400 else "yellow"
+        log.info(f"[{client}] {method} {path} [bold {status_color}]{status_code}[/bold {status_color}] ({process_time}ms)")
+        return response
+    except Exception as e:
+        process_time = round((time.time() - start_time) * 1000, 2)
+        log.error(f"[{client}] {method} {path} ERROR ({process_time}ms) - {str(e)}")
+        raise
 
 app.add_middleware(
     CORSMiddleware,
@@ -58,6 +94,55 @@ app.include_router(admin_router)
 # 静态文件
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# 全局异常处理器
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "code": exc.status_code,
+            "message": exc.detail if hasattr(exc, 'detail') else str(exc),
+            "data": {}
+        }
+    )
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    log.error(f"Unhandled exception: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={
+            "code": 500,
+            "message": "Internal server error",
+            "data": {}
+        }
+    )
+
+# 404 路由不存在
+@app.get("/{path:path}", include_in_schema=False)
+async def catch_all(path: str):
+    return JSONResponse(
+        content={
+            "code": 404,
+            "message": f"Route /{path} not found",
+            "data": {}
+        }
+    )
+
+# 根路径
+@app.get("/")
+async def root():
+    return JSONResponse(
+        content={
+            "code": 200,
+            "message": "success",
+            "data": {
+                "name": "App Store API",
+                "version": "1.0.0"
+            }
+        }
+    )
 
 # ==================== OAuth认证 ====================
 @app.post("/api/oauth/url")
@@ -718,4 +803,14 @@ async def admin_panel():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host=Config.HOST, port=Config.PORT)
+    
+    console.print(Panel.fit(
+        f"[bold cyan]App Store API Server[/bold cyan]\n\n"
+        f"[yellow]Local Access:[/yellow]   http://localhost:{Config.PORT}\n"
+        f"[yellow]Network Access:[/yellow] http://{Config.HOST}:{Config.PORT}\n"
+        f"[yellow]Admin Panel:[/yellow]    http://localhost:{Config.PORT}/admin\n\n"
+        f"[dim]Press Ctrl+C to stop[/dim]",
+        border_style="cyan"
+    ))
+    
+    uvicorn.run(app, host=Config.HOST, port=Config.PORT, log_config=None)

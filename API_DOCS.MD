@@ -986,23 +986,23 @@
 ### 完整应用发布流程
 
 1. **用户登录**
-   ```
+   ```http
    POST /api/oauth/url
    POST /api/oauth/login (带上授权码)
    ```
 
 2. **上传应用文件**
-   ```
+   ```http
    POST /api/upload/app (带apk文件)
    ```
 
 3. **创建应用**
-   ```
+   ```http
    POST /api/apps/create
    ```
 
 4. **添加版本**
-   ```
+   ```http
    POST /api/apps/1/version/add
    ```
 
@@ -1012,7 +1012,7 @@
    ```
 
 6. **用户下载应用**
-   ```
+   ```http
    POST /api/versions/1/download
    ```
 
@@ -1022,17 +1022,17 @@
    ```
 
 8. **用户点赞评论**
-   ```
+   ```http
    POST /api/reviews/10/like
    ```
 
 9. **用户回复评论**
-   ```
+   ```http
    POST /api/reviews/10/reply/add
    ```
 
 10. **更新应用版本**
-    ```
+    ```http
     POST /api/apps/1/version/add (新版本)
     ```
 
