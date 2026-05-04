@@ -9,7 +9,13 @@ import json
 import uuid
 import hashlib
 import os
+import platform
 from datetime import timedelta, datetime
+
+def clear_screen():
+    os.system('cls' if platform.system() == 'Windows' else 'clear')
+
+clear_screen()
 
 from config import Config
 from database import get_db, init_db

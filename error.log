@@ -1,0 +1,128 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: fastapi in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 1)) (0.124.4)
+Requirement already satisfied: python-multipart in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 3)) (0.0.20)
+Requirement already satisfied: sqlalchemy in c:\program files\python\lib\site-packages (from -r requirements.txt (line 4)) (1.3.18)
+Requirement already satisfied: httpx in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 5)) (0.28.1)
+Requirement already satisfied: webdavclient3 in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 6)) (3.14.7)
+Requirement already satisfied: python-dateutil in c:\program files\python\lib\site-packages (from -r requirements.txt (line 7)) (2.8.2)
+Requirement already satisfied: tomli in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 8)) (2.4.1)
+Requirement already satisfied: pydantic in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 9)) (2.10.6)
+Requirement already satisfied: markdown in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 11)) (3.7)
+Requirement already satisfied: bleach in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 12)) (6.1.0)
+Requirement already satisfied: uvicorn[standard] in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 2)) (0.33.0)
+Requirement already satisfied: python-jose[cryptography] in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 10)) (3.4.0)
+Requirement already satisfied: starlette<0.51.0,>=0.40.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (0.44.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (4.13.2)
+Requirement already satisfied: annotated-doc>=0.0.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (0.0.4)
+Requirement already satisfied: click>=7.0 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (7.1.2)
+Requirement already satisfied: h11>=0.8 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.16.0)
+Requirement already satisfied: colorama>=0.4 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.4.3)
+Requirement already satisfied: httptools>=0.6.3 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.6.4)
+Requirement already satisfied: python-dotenv>=0.13 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (1.0.1)
+Requirement already satisfied: pyyaml>=5.1 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (5.3.1)
+Requirement already satisfied: watchfiles>=0.13 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.24.0)
+Requirement already satisfied: websockets>=10.4 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (13.1)
+Requirement already satisfied: anyio in c:\users\17782\appdata\roaming\python\python38\site-packages (from httpx->-r requirements.txt (line 5)) (4.5.2)
+Requirement already satisfied: certifi in c:\program files\python\lib\site-packages (from httpx->-r requirements.txt (line 5)) (2020.6.20)
+Requirement already satisfied: httpcore==1.* in c:\users\17782\appdata\roaming\python\python38\site-packages (from httpx->-r requirements.txt (line 5)) (1.0.9)
+Requirement already satisfied: idna in c:\program files\python\lib\site-packages (from httpx->-r requirements.txt (line 5)) (2.10)
+Requirement already satisfied: requests in c:\program files\python\lib\site-packages (from webdavclient3->-r requirements.txt (line 6)) (2.24.0)
+Requirement already satisfied: lxml in c:\program files\python\lib\site-packages (from webdavclient3->-r requirements.txt (line 6)) (4.5.2)
+Requirement already satisfied: six>=1.5 in c:\program files\python\lib\site-packages (from python-dateutil->-r requirements.txt (line 7)) (1.15.0)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from pydantic->-r requirements.txt (line 9)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.27.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from pydantic->-r requirements.txt (line 9)) (2.27.2)
+Requirement already satisfied: ecdsa!=0.15 in c:\users\17782\appdata\roaming\python\python38\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (0.19.2)
+Requirement already satisfied: rsa!=4.1.1,!=4.4,<5.0,>=4.0 in c:\program files\python\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (4.6)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.1 in c:\program files\python\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (0.4.8)
+Requirement already satisfied: cryptography>=3.4.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (47.0.0)
+Requirement already satisfied: importlib-metadata>=4.4 in c:\users\17782\appdata\roaming\python\python38\site-packages (from markdown->-r requirements.txt (line 11)) (8.5.0)
+Requirement already satisfied: webencodings in c:\users\17782\appdata\roaming\python\python38\site-packages (from bleach->-r requirements.txt (line 12)) (0.5.1)
+Requirement already satisfied: cffi>=1.14 in c:\users\17782\appdata\roaming\python\python38\site-packages (from cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 10)) (1.17.1)
+Requirement already satisfied: zipp>=3.20 in c:\users\17782\appdata\roaming\python\python38\site-packages (from importlib-metadata>=4.4->markdown->-r requirements.txt (line 11)) (3.20.2)
+Requirement already satisfied: sniffio>=1.1 in c:\users\17782\appdata\roaming\python\python38\site-packages (from anyio->httpx->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: exceptiongroup>=1.0.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from anyio->httpx->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: chardet<4,>=3.0.2 in c:\program files\python\lib\site-packages (from requests->webdavclient3->-r requirements.txt (line 6)) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\program files\python\lib\site-packages (from requests->webdavclient3->-r requirements.txt (line 6)) (1.25.10)
+Requirement already satisfied: pycparser in c:\program files\python\lib\site-packages (from cffi>=1.14->cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 10)) (2.20)
+C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\jose\backends\cryptography_backend.py:4: CryptographyDeprecationWarning: Python 3.8 is no longer supported by the Python core team and support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.8.
+  from cryptography.exceptions import InvalidSignature, InvalidTag
+Traceback (most recent call last):
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2339, in _wrap_pool_connect
+    return fn()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 364, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 778, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 495, in checkout
+    rec = pool._do_get()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\impl.py", line 239, in _do_get
+    return self._create_connection()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 309, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 440, in __init__
+    self.__connect(first_connect_check=True)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.raise_(
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 656, in __connect
+    connection = pool._invoke_creator(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\default.py", line 493, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+sqlite3.OperationalError: unable to open database file
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "main.py", line 36, in <module>
+    init_db()
+  File "D:\ByUsi\Projects\FantasyStore\test\src\database.py", line 22, in init_db
+    Base.metadata.create_all(bind=engine)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\sql\schema.py", line 4546, in create_all
+    bind._run_visitor(
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2097, in _run_visitor
+    with self._optional_conn_ctx_manager(connection) as conn:
+  File "C:\Program Files\python\lib\contextlib.py", line 113, in __enter__
+    return next(self.gen)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2089, in _optional_conn_ctx_manager
+    with self._contextual_connect() as conn:
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2305, in _contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _wrap_pool_connect
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 1584, in _handle_dbapi_exception_noconnection
+    util.raise_(
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\base.py", line 2339, in _wrap_pool_connect
+    return fn()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 364, in connect
+    return _ConnectionFairy._checkout(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 778, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 495, in checkout
+    rec = pool._do_get()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\impl.py", line 239, in _do_get
+    return self._create_connection()
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 309, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 440, in __init__
+    self.__connect(first_connect_check=True)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 661, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\util\langhelpers.py", line 68, in __exit__
+    compat.raise_(
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\util\compat.py", line 178, in raise_
+    raise exception
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\pool\base.py", line 656, in __connect
+    connection = pool._invoke_creator(self)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\strategies.py", line 114, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "C:\Program Files\python\lib\site-packages\sqlalchemy\engine\default.py", line 493, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) unable to open database file
+(Background on this error at: http://sqlalche.me/e/13/e3q8)

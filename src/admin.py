@@ -9,7 +9,7 @@ from models import User, App, AppVersion, Review, AppStatus, VersionStatus, Revi
 from auth import verify_admin_password
 from crud import (
     get_apps, get_app, get_app_versions, get_version,
-    approve_app, update_app, update_app_status, set_current_version
+    approve_app, update_app, set_current_version
 )
 from webdav_client import get_webdav_client
 
