@@ -1,0 +1,30 @@
+[database]
+url = "sqlite:///./data/app_store.db"
+
+[webdav]
+url = "https://your-webdav-server.com"
+username = "your-username"
+password = "your-password"
+app_upload_path = "/apps/"
+screenshot_path = "/screenshots/"
+avatar_path = "/avatars/"
+changelog_path = "/changelogs/"
+
+[oauth]
+base_url = "https://games.cdifit.cn/oauth"
+api_base_url = "https://www.cdifit.cn/api/v4"
+client_id = "c3a6ce58-43d4-4151-84c9-ee8ed4c37017"
+client_secret = "your-client-secret"
+redirect_uri = "https://games.cdifit.cn/oauth/oauth.php"
+scope = "openid profile offline_access Files.Write"
+
+[app]
+name = "App Store API"
+version = "1.0.0"
+debug = true
+secret_key = "your-secret-key-change-this-in-production"
+algorithm = "HS256"
+access_token_expire_minutes = 30
+host = "0.0.0.0"
+port = 56320
+admin_password = "QQ@gxshg2e3i4T5f"

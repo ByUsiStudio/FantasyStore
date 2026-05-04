@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应用市场后台管理系统</title>
+    <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-container" id="loginContainer">
+            <div class="login-box">
+                <h1>应用市场后台管理系统</h1>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="请输入后台密码" class="input-field">
+                </div>
+                <button onclick="login()" class="btn btn-primary">登录</button>
+                <div id="loginError" class="error-message"></div>
+            </div>
+        </div>
+
+        <div class="main-container" id="mainContainer" style="display:none;">
+            <div class="sidebar">
+                <h2>管理面板</h2>
+                <nav>
+                    <button onclick="showTab('dashboard')" class="nav-btn active" data-tab="dashboard">仪表盘</button>
+                    <button onclick="showTab('apps')" class="nav-btn" data-tab="apps">应用管理</button>
+                    <button onclick="showTab('versions')" class="nav-btn" data-tab="versions">版本审核</button>
+                    <button onclick="showTab('reviews')" class="nav-btn" data-tab="reviews">评论管理</button>
+                    <button onclick="showTab('users')" class="nav-btn" data-tab="users">用户管理</button>
+                </nav>
+            </div>
+
+            <div class="content">
+                <div class="header">
+                    <h1 id="pageTitle">仪表盘</h1>
+                    <button onclick="logout()" class="btn btn-danger">退出登录</button>
+                </div>
+
+                <div id="dashboard" class="tab-content active">
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card">
+                            <h3>加载中...</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="apps" class="tab-content">
+                    <div class="filters">
+                        <select id="appStatusFilter" onchange="loadApps()">
+                            <option value="all">全部状态</option>
+                            <option value="pending">待审核</option>
+                            <option value="approved">已通过</option>
+                            <option value="rejected">已拒绝</option>
+                            <option value="removed">已下架</option>
+                        </select>
+                        <button onclick="loadApps()" class="btn btn-primary">刷新</button>
+                    </div>
+                    <div class="data-table" id="appsList"></div>
+                </div>
+
+                <div id="versions" class="tab-content">
+                    <div class="data-table" id="versionsList"></div>
+                </div>
+
+                <div id="reviews" class="tab-content">
+                    <div class="data-table" id="reviewsList"></div>
+                </div>
+
+                <div id="users" class="tab-content">
+                    <div class="data-table" id="usersList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/admin.js"></script>
+</body>
+</html>

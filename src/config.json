@@ -1,0 +1,26 @@
+{
+    "app_categories": [
+        "工具",
+        "游戏",
+        "社交",
+        "娱乐",
+        "教育",
+        "办公",
+        "摄影",
+        "音乐",
+        "阅读",
+        "购物",
+        "生活",
+        "健康"
+    ],
+    "file_settings": {
+        "max_file_size_mb": 100,
+        "allowed_image_extensions": [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+        "allowed_app_extensions": [".apk", ".ipa", ".exe", ".dmg", ".zip"]
+    },
+    "audit_settings": {
+        "auto_approve_trusted_users": false,
+        "require_screenshots": true,
+        "min_description_length": 10
+    }
+}
