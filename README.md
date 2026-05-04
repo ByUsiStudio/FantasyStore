@@ -1,7 +1,3 @@
-
-
-Based on the code map provided, I can see this is a FastAPI-based application store system. Let me analyze the key components and create a comprehensive README.
-
 # FantasyStore
 
 FantasyStore 是一个基于 FastAPI 构建的应用商店平台，支持应用的发布、版本管理、用户评价等功能。
@@ -9,6 +5,8 @@ FantasyStore 是一个基于 FastAPI 构建的应用商店平台，支持应用�
 ## 项目简介
 
 FantasyStore 为开发者提供了一个完整的应用分发和管理系统，支持 OAuth 第三方登录、应用审核、版本管理、用户评价等功能。系统采用前后端分离架构，前端使用原生 HTML/CSS/JavaScript 构建的管理后台。
+
+- [**API文档**](API_DOCS.MD)
 
 ## 技术栈
 
