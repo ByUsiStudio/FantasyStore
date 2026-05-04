@@ -1,4 +1,3 @@
-/test
-/test.bat
+/test/*
 /src/__pycache__/
 /src/venv/
