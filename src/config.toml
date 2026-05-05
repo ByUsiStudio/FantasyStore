@@ -11,11 +11,11 @@ avatar_path = "/avatars/"
 changelog_path = "/changelogs/"
 
 [oauth]
-base_url = "https://games.cdifit.cn/oauth"
+base_url = "https://games.cdifit.cn/"
 api_base_url = "https://www.cdifit.cn/api/v4"
 client_id = "c3a6ce58-43d4-4151-84c9-ee8ed4c37017"
 client_secret = "your-client-secret"
-redirect_uri = "https://games.cdifit.cn/oauth/oauth.php"
+redirect_uri = "https://games.cdifit.cn/oauth.php"
 scope = "openid profile offline_access Files.Write"
 
 [app]
