@@ -11,12 +11,15 @@ avatar_path = "/avatars/"
 changelog_path = "/changelogs/"
 
 [oauth]
-base_url = "https://games.cdifit.cn/"
 api_base_url = "https://www.cdifit.cn/api/v4"
-client_id = "c3a6ce58-43d4-4151-84c9-ee8ed4c37017"
-client_secret = "your-client-secret"
-redirect_uri = "https://games.cdifit.cn/oauth.php"
-scope = "openid profile offline_access Files.Write"
+client_id = "011463cd-32cc-4e83-9625-752e15fa4af8"
+client_secret = "3PdKSTBsFk5UjEzX0LJgfiHVxyNFQfUr"
+allowed_redirect_uris = [
+    "https://games.cdifit.cn/oauth.php",
+    "https://your-app.com/callback",
+    "http://localhost:3000/callback"
+]
+scope = "openid email UserInfo.Read Admin.Read offline_access"
 
 [app]
 name = "App Store API"

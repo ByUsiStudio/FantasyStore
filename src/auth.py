@@ -1,5 +1,7 @@
 import httpx
 import secrets
+import urllib.parse
+import hashlib
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from fastapi import HTTPException, status, Depends
@@ -14,11 +16,10 @@ security = HTTPBearer(auto_error=False)
 
 class CdifitOAuth:
     def __init__(self, config: dict):
-        self.base_url = config['base_url']
         self.api_base_url = config['api_base_url']
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
-        self.redirect_uri = config['redirect_uri']
+        self.allowed_redirect_uris = config['allowed_redirect_uris']
         self.scope = config['scope']
         self.token_cache = {}
         self.user_token_cache = {}
@@ -29,38 +30,69 @@ class CdifitOAuth:
     def generate_state(self) -> str:
         return secrets.token_hex(16)
     
-    def get_oauth_url(self) -> Dict[str, str]:
+    def generate_code_verifier(self) -> str:
+        return secrets.token_urlsafe(32)
+    
+    def generate_code_challenge(self, code_verifier: str) -> str:
+        digest = hashlib.sha256(code_verifier.encode()).digest()
+        import base64
+        return base64.urlsafe_b64encode(digest).decode().rstrip('=')
+    
+    def validate_redirect_uri(self, redirect_uri: str) -> bool:
+        return redirect_uri in self.allowed_redirect_uris
+    
+    def get_oauth_url(self, redirect_uri: str) -> Dict[str, str]:
+        if not self.validate_redirect_uri(redirect_uri):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid redirect_uri. Must be one of the allowed URIs."
+            )
+        
         local_token = self.generate_local_token()
         state = self.generate_state()
+        code_verifier = self.generate_code_verifier()
+        code_challenge = self.generate_code_challenge(code_verifier)
         
-        import urllib.parse
         params = {
             'response_type': 'code',
             'client_id': self.client_id,
-            'redirect_uri': self.redirect_uri,
+            'redirect_uri': redirect_uri,
             'scope': self.scope,
-            'state': f"{state}_{local_token}"
+            'state': state,
+            'code_challenge': code_challenge,
+            'code_challenge_method': 'S256'
         }
-        oauth_url = f"https://www.cdifit.cn/session/authorize?{urllib.parse.urlencode(params)}"
+        
+        oauth_url = f"{self.api_base_url.replace('/api/v4', '')}session/authorize?{urllib.parse.urlencode(params)}"
         
         self.token_cache[local_token] = {
             'state': state,
+            'code_verifier': code_verifier,
+            'redirect_uri': redirect_uri,
             'created_at': datetime.utcnow(),
             'expires_at': datetime.utcnow() + timedelta(minutes=5)
         }
         
         return {"token": local_token, "oauth_url": oauth_url}
     
-    async def exchange_code_for_token(self, code: str) -> Dict[str, Any]:
+    async def exchange_code_for_token(self, code: str, code_verifier: Optional[str] = None, redirect_uri: Optional[str] = None) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
+            data = {
+                "grant_type": "authorization_code",
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+                "code": code
+            }
+            
+            if code_verifier:
+                data["code_verifier"] = code_verifier
+            
+            if redirect_uri:
+                data["redirect_uri"] = redirect_uri
+            
             response = await client.post(
                 f"{self.api_base_url}/session/oauth/token",
-                data={
-                    "grant_type": "authorization_code",
-                    "client_id": self.client_id,
-                    "client_secret": self.client_secret,
-                    "code": code
-                },
+                data=data,
                 headers={"Content-Type": "application/x-www-form-urlencoded"}
             )
             
@@ -75,7 +107,7 @@ class CdifitOAuth:
     async def get_user_info(self, access_token: str) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{self.api_base_url}/user/info",
+                f"{self.api_base_url}/session/oauth/userinfo",
                 headers={"Authorization": f"Bearer {access_token}"}
             )
             
@@ -86,19 +118,37 @@ class CdifitOAuth:
                 )
             
             result = response.json()
-            if result.get('code') == 0:
-                return result.get('data', {})
-            else:
+            return result
+    
+    async def refresh_token(self, refresh_token: str) -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{self.api_base_url}/session/token/refresh",
+                json={"refresh_token": refresh_token},
+                headers={"Content-Type": "application/json"}
+            )
+            
+            if response.status_code != 200:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=result.get('msg', 'Failed to get user info')
+                    detail="Failed to refresh token"
                 )
+            
+            result = response.json()
+            if result.get('code') != 0:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail=result.get('msg', 'Failed to refresh token')
+                )
+            
+            return result.get('data', {})
     
     def cache_user_token(self, user_id: int, token_data: Dict[str, Any]):
+        expires_in = token_data.get('expires_in', 3600)
         self.user_token_cache[user_id] = {
             'access_token': token_data['access_token'],
             'refresh_token': token_data.get('refresh_token'),
-            'expires_at': datetime.utcnow() + timedelta(seconds=token_data.get('expires_in', 3600))
+            'expires_at': datetime.utcnow() + timedelta(seconds=expires_in)
         }
 
 oauth_client = None

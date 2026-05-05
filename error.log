@@ -1,384 +1,57 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: fastapi in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 1)) (0.124.4)
+Requirement already satisfied: python-multipart in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 3)) (0.0.20)
+Requirement already satisfied: sqlalchemy in c:\program files\python\lib\site-packages (from -r requirements.txt (line 4)) (1.3.18)
+Requirement already satisfied: httpx in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 5)) (0.28.1)
+Requirement already satisfied: webdavclient3 in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 6)) (3.14.7)
+Requirement already satisfied: python-dateutil in c:\program files\python\lib\site-packages (from -r requirements.txt (line 7)) (2.8.2)
+Requirement already satisfied: tomli in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 8)) (2.4.1)
+Requirement already satisfied: pydantic in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 9)) (2.10.6)
+Requirement already satisfied: markdown in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 11)) (3.7)
+Requirement already satisfied: bleach in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 12)) (6.1.0)
+Requirement already satisfied: rich in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 13)) (12.2.0)
+Requirement already satisfied: uvicorn[standard] in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 2)) (0.33.0)
+Requirement already satisfied: python-jose[cryptography] in c:\users\17782\appdata\roaming\python\python38\site-packages (from -r requirements.txt (line 10)) (3.4.0)
+Requirement already satisfied: starlette<0.51.0,>=0.40.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (0.44.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (4.13.2)
+Requirement already satisfied: annotated-doc>=0.0.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from fastapi->-r requirements.txt (line 1)) (0.0.4)
+Requirement already satisfied: click>=7.0 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (7.1.2)
+Requirement already satisfied: h11>=0.8 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.16.0)
+Requirement already satisfied: colorama>=0.4 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.4.3)
+Requirement already satisfied: httptools>=0.6.3 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.6.4)
+Requirement already satisfied: python-dotenv>=0.13 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (1.0.1)
+Requirement already satisfied: pyyaml>=5.1 in c:\program files\python\lib\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (5.3.1)
+Requirement already satisfied: watchfiles>=0.13 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (0.24.0)
+Requirement already satisfied: websockets>=10.4 in c:\users\17782\appdata\roaming\python\python38\site-packages (from uvicorn[standard]->-r requirements.txt (line 2)) (13.1)
+Requirement already satisfied: anyio in c:\users\17782\appdata\roaming\python\python38\site-packages (from httpx->-r requirements.txt (line 5)) (4.5.2)
+Requirement already satisfied: certifi in c:\program files\python\lib\site-packages (from httpx->-r requirements.txt (line 5)) (2020.6.20)
+Requirement already satisfied: httpcore==1.* in c:\users\17782\appdata\roaming\python\python38\site-packages (from httpx->-r requirements.txt (line 5)) (1.0.9)
+Requirement already satisfied: idna in c:\program files\python\lib\site-packages (from httpx->-r requirements.txt (line 5)) (2.10)
+Requirement already satisfied: requests in c:\program files\python\lib\site-packages (from webdavclient3->-r requirements.txt (line 6)) (2.24.0)
+Requirement already satisfied: lxml in c:\program files\python\lib\site-packages (from webdavclient3->-r requirements.txt (line 6)) (4.5.2)
+Requirement already satisfied: six>=1.5 in c:\program files\python\lib\site-packages (from python-dateutil->-r requirements.txt (line 7)) (1.15.0)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from pydantic->-r requirements.txt (line 9)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.27.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from pydantic->-r requirements.txt (line 9)) (2.27.2)
+Requirement already satisfied: ecdsa!=0.15 in c:\users\17782\appdata\roaming\python\python38\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (0.19.2)
+Requirement already satisfied: rsa!=4.1.1,!=4.4,<5.0,>=4.0 in c:\program files\python\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (4.6)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.1 in c:\program files\python\lib\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (0.4.8)
+Requirement already satisfied: cryptography>=3.4.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from python-jose[cryptography]->-r requirements.txt (line 10)) (47.0.0)
+Requirement already satisfied: importlib-metadata>=4.4 in c:\users\17782\appdata\roaming\python\python38\site-packages (from markdown->-r requirements.txt (line 11)) (8.5.0)
+Requirement already satisfied: webencodings in c:\users\17782\appdata\roaming\python\python38\site-packages (from bleach->-r requirements.txt (line 12)) (0.5.1)
+Requirement already satisfied: commonmark<0.10.0,>=0.9.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from rich->-r requirements.txt (line 13)) (0.9.1)
+Requirement already satisfied: pygments<3.0.0,>=2.6.0 in c:\users\17782\appdata\roaming\python\python38\site-packages (from rich->-r requirements.txt (line 13)) (2.19.2)
+Requirement already satisfied: cffi>=1.14 in c:\users\17782\appdata\roaming\python\python38\site-packages (from cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 10)) (1.17.1)
+Requirement already satisfied: zipp>=3.20 in c:\users\17782\appdata\roaming\python\python38\site-packages (from importlib-metadata>=4.4->markdown->-r requirements.txt (line 11)) (3.20.2)
+Requirement already satisfied: sniffio>=1.1 in c:\users\17782\appdata\roaming\python\python38\site-packages (from anyio->httpx->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: exceptiongroup>=1.0.2 in c:\users\17782\appdata\roaming\python\python38\site-packages (from anyio->httpx->-r requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: chardet<4,>=3.0.2 in c:\program files\python\lib\site-packages (from requests->webdavclient3->-r requirements.txt (line 6)) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\program files\python\lib\site-packages (from requests->webdavclient3->-r requirements.txt (line 6)) (1.25.10)
+Requirement already satisfied: pycparser in c:\program files\python\lib\site-packages (from cffi>=1.14->cryptography>=3.4.0->python-jose[cryptography]->-r requirements.txt (line 10)) (2.20)
 C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\jose\backends\cryptography_backend.py:4: CryptographyDeprecationWarning: Python 3.8 is no longer supported by the Python core team and support for it is deprecated in cryptography. The next release of cryptography will remove support for Python 3.8.
   from cryptography.exceptions import InvalidSignature, InvalidTag
-[05/05/26 07:48:33] INFO     Initializing database...
-[05/05/26 07:48:37] INFO     Initializing OAuth...
-                    INFO     Initializing WebDAV client...
-╭──────────────────────────────────────────────╮
-│ App Store API Server                         │
-│                                              │
-│ Local Access:   http://localhost:56320       │
-│ Network Access: http://0.0.0.0:56320         │
-│ Admin Panel:    http://localhost:56320/admin │
-│                                              │
-│ Press Ctrl+C to stop                         │
-╰──────────────────────────────────────────────╯
-                    INFO     Started server process [17556]
-                    INFO     Waiting for application startup.
-                    INFO     Application startup complete.
-                    INFO     Uvicorn running on http://0.0.0.0:56320 (Press CTRL+C to quit)
-[05/05/26 07:48:41] ERROR    [127.0.0.1] POST /admin/api/statistics ERROR (15.25ms) - 'NoneType' object has no attribute
-                             'headers'
-                    ERROR    Unhandled exception: 'NoneType' object has no attribute 'headers'
-                    INFO     127.0.0.1:56363 - "POST /admin/api/statistics HTTP/1.1" 500
-                    ERROR    Exception in ASGI application
+Traceback (most recent call last):
+  File "main.py", line 23, in <module>
+    from crud import (
+ImportError: cannot import name 'create_review_reply' from 'crud' (D:\ByUsi\Projects\FantasyStore\test\src\crud.py)
 
-                             ╭─────────────────────────── Traceback (most recent call last) ───────────────────────────╮
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_utils.py:76 in  │
-                             │ collapse_excgroups                                                                      │
-                             │                                                                                         │
-                             │    73 @contextmanager                                                                   │
-                             │    74 def collapse_excgroups() -> typing.Generator[None, None, None]:                   │
-                             │    75 │   try:                                                                          │
-                             │ ❱  76 │   │   yield                                                                     │
-                             │    77 │   except BaseException as exc:                                                  │
-                             │    78 │   │   if has_exceptiongroups:  # pragma: no cover                               │
-                             │    79 │   │   │   while isinstance(exc, BaseExceptionGroup) and len(exc.exceptions) ==  │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\base. │
-                             │ py:189 in __call__                                                                      │
-                             │                                                                                         │
-                             │   186 │   │   │   async with anyio.create_task_group() as task_group:                   │
-                             │   187 │   │   │   │   response = await self.dispatch_func(request, call_next)           │
-                             │   188 │   │   │   │   await response(scope, wrapped_receive, send)                      │
-                             │ ❱ 189 │   │   │   │   response_sent.set()                                               │
-                             │   190 │                                                                                 │
-                             │   191 │   async def dispatch(self, request: Request, call_next: RequestResponseEndpoint │
-                             │       Response:                                                                         │
-                             │   192 │   │   raise NotImplementedError()  # pragma: no cover                           │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\anyio\_backends\_asyncio.p │
-                             │ y:685 in __aexit__                                                                      │
-                             │                                                                                         │
-                             │    682 │   │                                                                            │
-                             │    683 │   │   self._active = False                                                     │
-                             │    684 │   │   if self._exceptions:                                                     │
-                             │ ❱  685 │   │   │   raise BaseExceptionGroup(                                            │
-                             │    686 │   │   │   │   "unhandled errors in a TaskGroup", self._exceptions              │
-                             │    687 │   │   │   )                                                                    │
-                             │    688                                                                                  │
-                             ╰─────────────────────────────────────────────────────────────────────────────────────────╯
-                             ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
-
-                             During handling of the above exception, another exception occurred:
-
-                             ╭─────────────────────────── Traceback (most recent call last) ───────────────────────────╮
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\uvicorn\protocols\http\htt │
-                             │ ptools_impl.py:409 in run_asgi                                                          │
-                             │                                                                                         │
-                             │   406 │   # ASGI exception wrapper                                                      │
-                             │   407 │   async def run_asgi(self, app: ASGI3Application) -> None:                      │
-                             │   408 │   │   try:                                                                      │
-                             │ ❱ 409 │   │   │   result = await app(  # type: ignore[func-returns-value]               │
-                             │   410 │   │   │   │   self.scope, self.receive, self.send                               │
-                             │   411 │   │   │   )                                                                     │
-                             │   412 │   │   except BaseException as exc:                                              │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\uvicorn\middleware\proxy_h │
-                             │ eaders.py:60 in __call__                                                                │
-                             │                                                                                         │
-                             │    57 │   │   │   │   │   port = 0                                                      │
-                             │    58 │   │   │   │   │   scope["client"] = (host, port)                                │
-                             │    59 │   │                                                                             │
-                             │ ❱  60 │   │   return await self.app(scope, receive, send)                               │
-                             │    61                                                                                   │
-                             │    62                                                                                   │
-                             │    63 def _parse_raw_hosts(value: str) -> list[str]:                                    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\applications.py:11 │
-                             │ 39 in __call__                                                                          │
-                             │                                                                                         │
-                             │   1136 │   async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None │
-                             │   1137 │   │   if self.root_path:                                                       │
-                             │   1138 │   │   │   scope["root_path"] = self.root_path                                  │
-                             │ ❱ 1139 │   │   await super().__call__(scope, receive, send)                             │
-                             │   1140 │                                                                                │
-                             │   1141 │   def add_api_route(                                                           │
-                             │   1142 │   │   self,                                                                    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\applications.py: │
-                             │ 112 in __call__                                                                         │
-                             │                                                                                         │
-                             │   109 │   │   scope["app"] = self                                                       │
-                             │   110 │   │   if self.middleware_stack is None:                                         │
-                             │   111 │   │   │   self.middleware_stack = self.build_middleware_stack()                 │
-                             │ ❱ 112 │   │   await self.middleware_stack(scope, receive, send)                         │
-                             │   113 │                                                                                 │
-                             │   114 │   def on_event(self, event_type: str) -> typing.Callable:  # type: ignore[type- │
-                             │   115 │   │   return self.router.on_event(event_type)  # pragma: no cover               │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\error │
-                             │ s.py:187 in __call__                                                                    │
-                             │                                                                                         │
-                             │   184 │   │   │   # We always continue to raise the exception.                          │
-                             │   185 │   │   │   # This allows servers to log the error, or allows test clients        │
-                             │   186 │   │   │   # to optionally raise the error within the test case.                 │
-                             │ ❱ 187 │   │   │   raise exc                                                             │
-                             │   188 │                                                                                 │
-                             │   189 │   def format_line(self, index: int, line: str, frame_lineno: int, frame_index:  │
-                             │       str:                                                                              │
-                             │   190 │   │   values = {                                                                │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\error │
-                             │ s.py:165 in __call__                                                                    │
-                             │                                                                                         │
-                             │   162 │   │   │   await send(message)                                                   │
-                             │   163 │   │                                                                             │
-                             │   164 │   │   try:                                                                      │
-                             │ ❱ 165 │   │   │   await self.app(scope, receive, _send)                                 │
-                             │   166 │   │   except Exception as exc:                                                  │
-                             │   167 │   │   │   request = Request(scope)                                              │
-                             │   168 │   │   │   if self.debug:                                                        │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\cors. │
-                             │ py:85 in __call__                                                                       │
-                             │                                                                                         │
-                             │    82 │   │   origin = headers.get("origin")                                            │
-                             │    83 │   │                                                                             │
-                             │    84 │   │   if origin is None:                                                        │
-                             │ ❱  85 │   │   │   await self.app(scope, receive, send)                                  │
-                             │    86 │   │   │   return                                                                │
-                             │    87 │   │                                                                             │
-                             │    88 │   │   if method == "OPTIONS" and "access-control-request-method" in headers:    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\base. │
-                             │ py:189 in __call__                                                                      │
-                             │                                                                                         │
-                             │   186 │   │   │   async with anyio.create_task_group() as task_group:                   │
-                             │   187 │   │   │   │   response = await self.dispatch_func(request, call_next)           │
-                             │   188 │   │   │   │   await response(scope, wrapped_receive, send)                      │
-                             │ ❱ 189 │   │   │   │   response_sent.set()                                               │
-                             │   190 │                                                                                 │
-                             │   191 │   async def dispatch(self, request: Request, call_next: RequestResponseEndpoint │
-                             │       Response:                                                                         │
-                             │   192 │   │   raise NotImplementedError()  # pragma: no cover                           │
-                             │                                                                                         │
-                             │ C:\Program Files\python\lib\contextlib.py:131 in __exit__                               │
-                             │                                                                                         │
-                             │   128 │   │   │   │   # tell if we get the same exception back                          │
-                             │   129 │   │   │   │   value = type()                                                    │
-                             │   130 │   │   │   try:                                                                  │
-                             │ ❱ 131 │   │   │   │   self.gen.throw(type, value, traceback)                            │
-                             │   132 │   │   │   except StopIteration as exc:                                          │
-                             │   133 │   │   │   │   # Suppress StopIteration *unless* it's the same exception that    │
-                             │   134 │   │   │   │   # was passed to throw().  This prevents a StopIteration           │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_utils.py:82 in  │
-                             │ collapse_excgroups                                                                      │
-                             │                                                                                         │
-                             │    79 │   │   │   while isinstance(exc, BaseExceptionGroup) and len(exc.exceptions) ==  │
-                             │    80 │   │   │   │   exc = exc.exceptions[0]                                           │
-                             │    81 │   │                                                                             │
-                             │ ❱  82 │   │   raise exc                                                                 │
-                             │    83                                                                                   │
-                             │    84                                                                                   │
-                             │    85 def get_route_path(scope: Scope) -> str:                                          │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\base. │
-                             │ py:187 in __call__                                                                      │
-                             │                                                                                         │
-                             │   184 │   │                                                                             │
-                             │   185 │   │   with collapse_excgroups():                                                │
-                             │   186 │   │   │   async with anyio.create_task_group() as task_group:                   │
-                             │ ❱ 187 │   │   │   │   response = await self.dispatch_func(request, call_next)           │
-                             │   188 │   │   │   │   await response(scope, wrapped_receive, send)                      │
-                             │   189 │   │   │   │   response_sent.set()                                               │
-                             │   190                                                                                   │
-                             │                                                                                         │
-                             │ D:\ByUsi\Projects\FantasyStore\test\src\main.py:73 in log_requests                      │
-                             │                                                                                         │
-                             │    70 │   client = request.client.host if request.client else "unknown"                 │
-                             │    71 │                                                                                 │
-                             │    72 │   try:                                                                          │
-                             │ ❱  73 │   │   response = await call_next(request)                                       │
-                             │    74 │   │   process_time = round((time.time() - start_time) * 1000, 2)                │
-                             │    75 │   │   status_code = response.status_code                                        │
-                             │    76 │   │   status_color = "green" if status_code < 400 else "red" if status_code >=  │
-                             │       else "yellow"                                                                     │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\base. │
-                             │ py:163 in call_next                                                                     │
-                             │                                                                                         │
-                             │   160 │   │   │   │   │   message = await recv_stream.receive()                         │
-                             │   161 │   │   │   except anyio.EndOfStream:                                             │
-                             │   162 │   │   │   │   if app_exc is not None:                                           │
-                             │ ❱ 163 │   │   │   │   │   raise app_exc                                                 │
-                             │   164 │   │   │   │   raise RuntimeError("No response returned.")                       │
-                             │   165 │   │   │                                                                         │
-                             │   166 │   │   │   assert message["type"] == "http.response.start"                       │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\base. │
-                             │ py:149 in coro                                                                          │
-                             │                                                                                         │
-                             │   146 │   │   │   │                                                                     │
-                             │   147 │   │   │   │   async with send_stream:                                           │
-                             │   148 │   │   │   │   │   try:                                                          │
-                             │ ❱ 149 │   │   │   │   │   │   await self.app(scope, receive_or_disconnect, send_no_erro │
-                             │   150 │   │   │   │   │   except Exception as exc:                                      │
-                             │   151 │   │   │   │   │   │   app_exc = exc                                             │
-                             │   152                                                                                   │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\middleware\excep │
-                             │ tions.py:62 in __call__                                                                 │
-                             │                                                                                         │
-                             │   59 │   │   else:                                                                      │
-                             │   60 │   │   │   conn = WebSocket(scope, receive, send)                                 │
-                             │   61 │   │                                                                              │
-                             │ ❱ 62 │   │   await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)   │
-                             │   63 │                                                                                  │
-                             │   64 │   def http_exception(self, request: Request, exc: Exception) -> Response:        │
-                             │   65 │   │   assert isinstance(exc, HTTPException)                                      │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_exception_handl │
-                             │ er.py:53 in wrapped_app                                                                 │
-                             │                                                                                         │
-                             │   50 │   │   │   │   handler = _lookup_exception_handler(exception_handlers, exc)       │
-                             │   51 │   │   │                                                                          │
-                             │   52 │   │   │   if handler is None:                                                    │
-                             │ ❱ 53 │   │   │   │   raise exc                                                          │
-                             │   54 │   │   │                                                                          │
-                             │   55 │   │   │   if response_started:                                                   │
-                             │   56 │   │   │   │   raise RuntimeError("Caught handled exception, but response already │
-                             │      started.") from exc                                                                │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_exception_handl │
-                             │ er.py:42 in wrapped_app                                                                 │
-                             │                                                                                         │
-                             │   39 │   │   │   await send(message)                                                    │
-                             │   40 │   │                                                                              │
-                             │   41 │   │   try:                                                                       │
-                             │ ❱ 42 │   │   │   await app(scope, receive, sender)                                      │
-                             │   43 │   │   except Exception as exc:                                                   │
-                             │   44 │   │   │   handler = None                                                         │
-                             │   45                                                                                    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\middleware\asyncex │
-                             │ itstack.py:18 in __call__                                                               │
-                             │                                                                                         │
-                             │   15 │   async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:  │
-                             │   16 │   │   async with AsyncExitStack() as stack:                                      │
-                             │   17 │   │   │   scope[self.context_name] = stack                                       │
-                             │ ❱ 18 │   │   │   await self.app(scope, receive, send)                                   │
-                             │   19                                                                                    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\routing.py:715   │
-                             │ in __call__                                                                             │
-                             │                                                                                         │
-                             │   712 │   │   """                                                                       │
-                             │   713 │   │   The main entry point to the Router class.                                 │
-                             │   714 │   │   """                                                                       │
-                             │ ❱ 715 │   │   await self.middleware_stack(scope, receive, send)                         │
-                             │   716 │                                                                                 │
-                             │   717 │   async def app(self, scope: Scope, receive: Receive, send: Send) -> None:      │
-                             │   718 │   │   assert scope["type"] in ("http", "websocket", "lifespan")                 │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\routing.py:735   │
-                             │ in app                                                                                  │
-                             │                                                                                         │
-                             │   732 │   │   │   match, child_scope = route.matches(scope)                             │
-                             │   733 │   │   │   if match == Match.FULL:                                               │
-                             │   734 │   │   │   │   scope.update(child_scope)                                         │
-                             │ ❱ 735 │   │   │   │   await route.handle(scope, receive, send)                          │
-                             │   736 │   │   │   │   return                                                            │
-                             │   737 │   │   │   elif match == Match.PARTIAL and partial is None:                      │
-                             │   738 │   │   │   │   partial = route                                                   │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\routing.py:288   │
-                             │ in handle                                                                               │
-                             │                                                                                         │
-                             │   285 │   │   │   │   response = PlainTextResponse("Method Not Allowed", status_code=40 │
-                             │       headers=headers)                                                                  │
-                             │   286 │   │   │   await response(scope, receive, send)                                  │
-                             │   287 │   │   else:                                                                     │
-                             │ ❱ 288 │   │   │   await self.app(scope, receive, send)                                  │
-                             │   289 │                                                                                 │
-                             │   290 │   def __eq__(self, other: typing.Any) -> bool:                                  │
-                             │   291 │   │   return (                                                                  │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\routing.py:120 in  │
-                             │ app                                                                                     │
-                             │                                                                                         │
-                             │    117 │   │   │   │   )                                                                │
-                             │    118 │   │                                                                            │
-                             │    119 │   │   # Same as in Starlette                                                   │
-                             │ ❱  120 │   │   await wrap_app_handling_exceptions(app, request)(scope, receive, send)   │
-                             │    121 │                                                                                │
-                             │    122 │   return app                                                                   │
-                             │    123                                                                                  │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_exception_handl │
-                             │ er.py:53 in wrapped_app                                                                 │
-                             │                                                                                         │
-                             │   50 │   │   │   │   handler = _lookup_exception_handler(exception_handlers, exc)       │
-                             │   51 │   │   │                                                                          │
-                             │   52 │   │   │   if handler is None:                                                    │
-                             │ ❱ 53 │   │   │   │   raise exc                                                          │
-                             │   54 │   │   │                                                                          │
-                             │   55 │   │   │   if response_started:                                                   │
-                             │   56 │   │   │   │   raise RuntimeError("Caught handled exception, but response already │
-                             │      started.") from exc                                                                │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\starlette\_exception_handl │
-                             │ er.py:42 in wrapped_app                                                                 │
-                             │                                                                                         │
-                             │   39 │   │   │   await send(message)                                                    │
-                             │   40 │   │                                                                              │
-                             │   41 │   │   try:                                                                       │
-                             │ ❱ 42 │   │   │   await app(scope, receive, sender)                                      │
-                             │   43 │   │   except Exception as exc:                                                   │
-                             │   44 │   │   │   handler = None                                                         │
-                             │   45                                                                                    │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\routing.py:106 in  │
-                             │ app                                                                                     │
-                             │                                                                                         │
-                             │    103 │   │   │   │   scope["fastapi_inner_astack"] = request_stack                    │
-                             │    104 │   │   │   │   async with AsyncExitStack() as function_stack:                   │
-                             │    105 │   │   │   │   │   scope["fastapi_function_astack"] = function_stack            │
-                             │ ❱  106 │   │   │   │   │   response = await f(request)                                  │
-                             │    107 │   │   │   │   await response(scope, receive, send)                             │
-                             │    108 │   │   │   │   # Continues customization                                        │
-                             │    109 │   │   │   │   response_awaited = True                                          │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\routing.py:430 in  │
-                             │ app                                                                                     │
-                             │                                                                                         │
-                             │    427 │   │   )                                                                        │
-                             │    428 │   │   errors = solved_result.errors                                            │
-                             │    429 │   │   if not errors:                                                           │
-                             │ ❱  430 │   │   │   raw_response = await run_endpoint_function(                          │
-                             │    431 │   │   │   │   dependant=dependant,                                             │
-                             │    432 │   │   │   │   values=solved_result.values,                                     │
-                             │    433 │   │   │   │   is_coroutine=is_coroutine,                                       │
-                             │                                                                                         │
-                             │ C:\Users\17782\AppData\Roaming\Python\Python38\site-packages\fastapi\routing.py:316 in  │
-                             │ run_endpoint_function                                                                   │
-                             │                                                                                         │
-                             │    313 │   assert dependant.call is not None, "dependant.call must be a function"       │
-                             │    314 │                                                                                │
-                             │    315 │   if is_coroutine:                                                             │
-                             │ ❱  316 │   │   return await dependant.call(**values)                                    │
-                             │    317 │   else:                                                                        │
-                             │    318 │   │   return await run_in_threadpool(dependant.call, **values)                 │
-                             │    319                                                                                  │
-                             │                                                                                         │
-                             │ D:\ByUsi\Projects\FantasyStore\test\src\admin.py:262 in admin_get_statistics            │
-                             │                                                                                         │
-                             │   259 │   request = None,                                                               │
-                             │   260 │   db: Session = Depends(get_db)                                                 │
-                             │   261 ):                                                                                │
-                             │ ❱ 262 │   verify_admin(request, db)                                                     │
-                             │   263 │                                                                                 │
-                             │   264 │   total_apps = db.query(App).count()                                            │
-                             │   265 │   pending_apps = db.query(App).filter(App.status == AppStatus.PENDING).count()  │
-                             │                                                                                         │
-                             │ D:\ByUsi\Projects\FantasyStore\test\src\admin.py:19 in verify_admin                     │
-                             │                                                                                         │
-                             │    16 router = APIRouter(prefix="/admin/api", tags=["Admin API"])                       │
-                             │    17                                                                                   │
-                             │    18 def verify_admin(request, db: Session):                                           │
-                             │ ❱  19 │   password = request.headers.get("X-Admin-Password")                            │
-                             │    20 │   if not password or not verify_admin_password(password):                       │
-                             │    21 │   │   raise HTTPException(status_code=401, detail="Unauthorized")               │
-                             │    22 │   return True                                                                   │
-                             ╰─────────────────────────────────────────────────────────────────────────────────────────╯
-                             AttributeError: 'NoneType' object has no attribute 'headers'
+D:\ByUsi\Projects\FantasyStore\test\src>

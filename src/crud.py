@@ -235,6 +235,10 @@ def get_app_reviews(db: Session, app_id: int, skip: int = 0, limit: int = 100):
         Review.status == ReviewStatus.APPROVED
     ).order_by(desc(Review.created_at)).offset(skip).limit(limit).all()
 
+def get_reviews(db: Session, app_id: int, skip: int = 0, limit: int = 100):
+    """获取应用评论（兼容旧接口名）"""
+    return get_app_reviews(db, app_id, skip, limit)
+
 def update_review(db: Session, review_id: int, **kwargs):
     review = db.query(Review).filter(Review.id == review_id).first()
     if review:
@@ -340,6 +344,10 @@ def create_reply(db: Session, review_id: int, user_id: int, content: str) -> Rev
     db.refresh(reply)
     return reply
 
+def create_review_reply(db: Session, review_id: int, user_id: int, content: str) -> ReviewReply:
+    """创建评论回复（兼容旧接口名）"""
+    return create_reply(db, review_id, user_id, content)
+
 def get_review_replies(db: Session, review_id: int, skip: int = 0, limit: int = 100):
     return db.query(ReviewReply).filter(
         ReviewReply.review_id == review_id
@@ -381,3 +389,96 @@ def record_download(db: Session, app_id: int, version_id: int = None,
         db.commit()
     
     return record
+
+def download_app(db: Session, app_id: int, version_id: int = None, user_id: int = None, ip: str = None, user_agent: str = None):
+    """下载应用（兼容旧接口名）"""
+    return record_download(db, app_id, version_id, user_id, ip, user_agent)
+
+def create_download_record(db: Session, app_id: int, version_id: int = None, user_id: int = None, ip: str = None, user_agent: str = None):
+    """创建下载记录（兼容旧接口名）"""
+    return record_download(db, app_id, version_id, user_id, ip, user_agent)
+
+def get_download_count(db: Session, app_id: int):
+    """获取应用下载总数"""
+    app = db.query(App).filter(App.id == app_id).first()
+    return app.total_downloads if app else 0
+
+def get_user_download_history(db: Session, user_id: int, skip: int = 0, limit: int = 100):
+    """获取用户下载历史"""
+    return db.query(DownloadRecord).filter(
+        DownloadRecord.user_id == user_id
+    ).order_by(desc(DownloadRecord.created_at)).offset(skip).limit(limit).all()
+
+def delete_version(db: Session, version_id: int):
+    """删除版本"""
+    version = db.query(AppVersion).filter(AppVersion.id == version_id).first()
+    if version:
+        db.delete(version)
+        db.commit()
+        return True
+    return False
+
+def approve_version(db: Session, version_id: int):
+    """审核通过版本"""
+    version = db.query(AppVersion).filter(AppVersion.id == version_id).first()
+    if version:
+        version.status = VersionStatus.APPROVED
+        db.commit()
+        return True
+    return False
+
+def get_users(db: Session, skip: int = 0, limit: int = 100):
+    """获取用户列表（管理员用）"""
+    return db.query(User).order_by(desc(User.created_at)).offset(skip).limit(limit).all()
+
+def delete_user(db: Session, user_id: int):
+    """删除用户（管理员用）"""
+    user = db.query(User).filter(User.id == user_id).first()
+    if user:
+        db.delete(user)
+        db.commit()
+        return True
+    return False
+
+def get_reviews_for_admin(db: Session, skip: int = 0, limit: int = 100, status: Optional[ReviewStatus] = None):
+    """获取评论列表（管理员用）"""
+    query = db.query(Review)
+    if status:
+        query = query.filter(Review.status == status)
+    return query.order_by(desc(Review.created_at)).offset(skip).limit(limit).all()
+
+def delete_review_admin(db: Session, review_id: int):
+    """删除评论（管理员用）"""
+    return delete_review(db, review_id)
+
+def update_review_status(db: Session, review_id: int, status: ReviewStatus):
+    """更新评论状态（管理员用）"""
+    review = db.query(Review).filter(Review.id == review_id).first()
+    if review:
+        review.status = status
+        db.commit()
+        db.refresh(review)
+        update_app_rating(db, review.app_id)
+    return review
+
+# ==================== 审计日志 ====================
+def create_audit_log(db: Session, user_id: int, action: str, target_type: str, target_id: int = None, details: Dict[str, Any] = None):
+    """创建审计日志"""
+    log = AuditLog(
+        user_id=user_id,
+        action=action,
+        target_type=target_type,
+        target_id=target_id,
+        details=json.dumps(details) if details else None
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(log)
+    return log
+
+def get_audit_logs(db: Session, skip: int = 0, limit: int = 100, user_id: int = None):
+    """获取审计日志列表"""
+    query = db.query(AuditLog)
+    if user_id:
+        query = query.filter(AuditLog.user_id == user_id)
+    return query.order_by(desc(AuditLog.created_at)).offset(skip).limit(limit).all()

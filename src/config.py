@@ -24,11 +24,10 @@ class Config:
     }
 
     OAUTH_CONFIG = {
-        "base_url": toml_data["oauth"]["base_url"],
         "api_base_url": toml_data["oauth"]["api_base_url"],
         "client_id": toml_data["oauth"]["client_id"],
         "client_secret": toml_data["oauth"]["client_secret"],
-        "redirect_uri": toml_data["oauth"]["redirect_uri"],
+        "allowed_redirect_uris": toml_data["oauth"]["allowed_redirect_uris"],
         "scope": toml_data["oauth"]["scope"],
     }
 

@@ -1,6 +1,7 @@
 # FantasyStore
 
 FantasyStore 是一个基于 FastAPI 构建的应用商店平台，支持应用的发布、版本管理、用户评价等功能。
+> 使用DeepSeek配合Builder开发本应用市场api
 
 ## 项目简介
 
