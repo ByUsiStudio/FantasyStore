@@ -134,7 +134,9 @@ async def root():
 @app.post("/api/oauth/url")
 async def get_oauth_url(redirect_uri: str = Form(...)):
     oauth = get_oauth_client()
-    return JSONResponse(content=oauth.get_oauth_url(redirect_uri))
+    result = oauth.get_oauth_url(redirect_uri)
+    log.info(f"Generated OAuth URL with state: {result.get('state')}")
+    return JSONResponse(content=result)
 
 @app.post("/api/oauth/login")
 async def oauth_login(
@@ -215,7 +217,12 @@ async def oauth_callback(
     error_description: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    log.info(f"OAuth callback received - method: {request.method}, code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
+    log.info(f"=== OAuth Callback Start ===")
+    log.info(f"Method: {request.method}")
+    log.info(f"Full URL: {request.url}")
+    log.info(f"Code: {code[:20] if code else 'None'}...")
+    log.info(f"State: {state}")
+    log.info(f"Error: {error}")
     
     # 如果是 POST 请求，尝试从表单中获取参数
     if request.method == "POST":
@@ -248,20 +255,29 @@ async def oauth_callback(
     try:
         oauth = get_oauth_client()
         
+        # 调试：打印缓存中的所有 state
+        log.info(f"Available states in cache: {list(oauth.token_cache.keys())}")
+        log.info(f"Cache size: {len(oauth.token_cache)}")
+        log.info(f"Looking for state: {state}")
+        
         cached_data = oauth.token_cache.get(state)
         if not cached_data:
-            log.error(f"Invalid or expired state: {state}")
-            log.info(f"Available states in cache: {list(oauth.token_cache.keys())}")
+            log.error(f"State '{state}' not found in cache")
+            log.info(f"Cache contains: {list(oauth.token_cache.keys())}")
             return JSONResponse(content={
                 "code": 400,
-                "message": "Invalid or expired state",
-                "data": {}
+                "message": f"Invalid or expired state. Available states: {len(oauth.token_cache)}",
+                "data": {
+                    "received_state": state,
+                    "available_states": list(oauth.token_cache.keys())
+                }
             })
         
         code_verifier = cached_data.get('code_verifier')
         redirect_uri = cached_data.get('redirect_uri')
         
-        log.info(f"Exchanging code for token, redirect_uri: {redirect_uri}")
+        log.info(f"Found cached data - redirect_uri: {redirect_uri}")
+        log.info(f"Exchanging code for token...")
         token_data = await oauth.exchange_code_for_token(code, code_verifier, redirect_uri)
         
         if not token_data or 'access_token' not in token_data:
@@ -336,6 +352,48 @@ async def oauth_callback_with_slash(
 ):
     """处理带尾部斜杠的回调请求"""
     return await oauth_callback(request, code, state, error, error_description, db)
+
+# ==================== 调试端点 ====================
+@app.get("/debug/routes")
+async def list_routes():
+    """调试用：列出所有已注册的路由"""
+    routes = []
+    for route in app.routes:
+        methods = list(route.methods) if hasattr(route, 'methods') else []
+        routes.append({
+            "path": route.path,
+            "methods": methods
+        })
+    return JSONResponse(content={"routes": routes})
+
+@app.get("/debug/cache")
+async def debug_cache():
+    """调试：查看当前OAuth缓存内容"""
+    oauth = get_oauth_client()
+    # 隐藏敏感信息，只显示state的前8位
+    safe_cache = {}
+    for k, v in oauth.token_cache.items():
+        safe_cache[k[:8] + "..."] = {
+            "redirect_uri": v.get('redirect_uri', '')[:50],
+            "has_code_verifier": bool(v.get('code_verifier')),
+            "created_at": v.get('created_at', 'unknown')
+        }
+    return JSONResponse(content={
+        "cache_size": len(oauth.token_cache),
+        "cache_keys": [k[:8] + "..." for k in oauth.token_cache.keys()],
+        "cache_content": safe_cache
+    })
+
+@app.get("/debug/health")
+async def health_check():
+    """健康检查端点"""
+    oauth = get_oauth_client()
+    return JSONResponse(content={
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "oauth_cache_size": len(oauth.token_cache),
+        "app_status": "running"
+    })
 
 # ==================== 用户信息 ====================
 @app.post("/api/me")
@@ -634,19 +692,6 @@ async def reply_to_review(
 async def get_categories():
     return JSONResponse(content={"code": 200, "data": Config.APP_CATEGORIES})
 
-# ==================== 调试端点 ====================
-@app.get("/debug/routes")
-async def list_routes():
-    """调试用：列出所有已注册的路由"""
-    routes = []
-    for route in app.routes:
-        methods = list(route.methods) if hasattr(route, 'methods') else []
-        routes.append({
-            "path": route.path,
-            "methods": methods
-        })
-    return JSONResponse(content={"routes": routes})
-
 # ==================== 后台管理页面 ====================
 from fastapi.responses import HTMLResponse
 
@@ -679,7 +724,9 @@ if __name__ == "__main__":
         f"[yellow]Local Access:[/yellow]   http://localhost:{Config.PORT}\n"
         f"[yellow]Network Access:[/yellow] http://0.0.0.0:{Config.PORT}\n"
         f"[yellow]Admin Panel:[/yellow]    http://localhost:{Config.PORT}/admin\n"
-        f"[yellow]Debug Routes:[/yellow]   http://localhost:{Config.PORT}/debug/routes\n\n"
+        f"[yellow]Debug Routes:[/yellow]   http://localhost:{Config.PORT}/debug/routes\n"
+        f"[yellow]Debug Cache:[/yellow]    http://localhost:{Config.PORT}/debug/cache\n"
+        f"[yellow]Health Check:[/yellow]   http://localhost:{Config.PORT}/debug/health\n\n"
         f"[green]Press Ctrl+C to stop[/green]",
         border_style="bright_blue"
     ))
