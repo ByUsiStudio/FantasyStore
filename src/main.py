@@ -217,19 +217,31 @@ async def oauth_refresh(
     })
 
 # ==================== OAuth回调 ====================
-@app.get("/api/oauth/callback", response_class=JSONResponse)
+# 修复：使用正确的 logger (log) 而不是 logger，同时支持 GET 和 POST
+@app.api_route("/api/oauth/callback", methods=["GET", "POST"])
 async def oauth_callback(
     request: Request,
-    code: str = Query(None),
-    state: str = Query(None),
-    error: str = Query(None),
-    error_description: str = Query(None),
+    code: Optional[str] = Query(None),
+    state: Optional[str] = Query(None),
+    error: Optional[str] = Query(None),
+    error_description: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    logger.info(f"OAuth callback received - code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
+    # 如果是 POST 请求，尝试从表单中获取参数
+    if request.method == "POST":
+        try:
+            form = await request.form()
+            code = code or form.get("code")
+            state = state or form.get("state")
+            error = error or form.get("error")
+            error_description = error_description or form.get("error_description")
+        except Exception:
+            pass
+    
+    log.info(f"OAuth callback received - code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
     
     if error:
-        logger.error(f"OAuth error: {error} - {error_description}")
+        log.error(f"OAuth error: {error} - {error_description}")
         return JSONResponse(content={
             "code": 400,
             "message": f"OAuth error: {error_description or error}",
@@ -237,7 +249,7 @@ async def oauth_callback(
         })
     
     if not code or not state:
-        logger.error("Missing code or state parameter")
+        log.error("Missing code or state parameter")
         return JSONResponse(content={
             "code": 400,
             "message": "Missing code or state parameter",
@@ -249,7 +261,7 @@ async def oauth_callback(
         
         cached_data = oauth.token_cache.get(state)
         if not cached_data:
-            logger.error(f"Invalid or expired state: {state}")
+            log.error(f"Invalid or expired state: {state}")
             return JSONResponse(content={
                 "code": 400,
                 "message": "Invalid or expired state",
@@ -259,29 +271,29 @@ async def oauth_callback(
         code_verifier = cached_data.get('code_verifier')
         redirect_uri = cached_data.get('redirect_uri')
         
-        logger.info(f"Exchanging code for token, redirect_uri: {redirect_uri}")
+        log.info(f"Exchanging code for token, redirect_uri: {redirect_uri}")
         token_data = await oauth.exchange_code_for_token(code, code_verifier, redirect_uri)
         
         if not token_data or 'access_token' not in token_data:
-            logger.error("Failed to exchange code for token")
+            log.error("Failed to exchange code for token")
             return JSONResponse(content={
                 "code": 500,
                 "message": "Failed to exchange code for token",
                 "data": {}
             })
         
-        logger.info("Getting user info from OAuth server")
+        log.info("Getting user info from OAuth server")
         user_info = await oauth.get_user_info(token_data['access_token'])
         
         if not user_info or 'id' not in user_info:
-            logger.error("Failed to get user info")
+            log.error("Failed to get user info")
             return JSONResponse(content={
                 "code": 500,
                 "message": "Failed to get user info",
                 "data": {}
             })
         
-        logger.info(f"Creating/updating user: {user_info.get('id')}")
+        log.info(f"Creating/updating user: {user_info.get('id')}")
         user = create_or_update_user(db, user_info.get('id'), {
             'username': user_info.get('username') or user_info.get('name'),
             'email': user_info.get('email'),
@@ -296,7 +308,7 @@ async def oauth_callback(
             expires_delta=timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
         )
         
-        logger.info(f"User {user.username} logged in successfully")
+        log.info(f"User {user.username} logged in successfully")
         return JSONResponse(content={
             "code": 200,
             "message": "success",
@@ -315,12 +327,25 @@ async def oauth_callback(
         })
     
     except Exception as e:
-        logger.error(f"OAuth callback error: {str(e)}", exc_info=True)
+        log.error(f"OAuth callback error: {str(e)}", exc_info=True)
         return JSONResponse(content={
             "code": 500,
             "message": f"Internal server error: {str(e)}",
             "data": {}
         })
+
+# 添加带尾部斜杠的路由支持
+@app.api_route("/api/oauth/callback/", methods=["GET", "POST"])
+async def oauth_callback_with_slash(
+    request: Request,
+    code: Optional[str] = Query(None),
+    state: Optional[str] = Query(None),
+    error: Optional[str] = Query(None),
+    error_description: Optional[str] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """处理带尾部斜杠的回调请求"""
+    return await oauth_callback(request, code, state, error, error_description, db)
 
 # ==================== 用户信息 ====================
 @app.post("/api/me")
@@ -619,6 +644,18 @@ async def reply_to_review(
 async def get_categories():
     return JSONResponse(content={"code": 200, "data": Config.APP_CATEGORIES})
 
+# ==================== 调试端点 ====================
+@app.get("/debug/routes")
+async def list_routes():
+    """调试用：列出所有已注册的路由"""
+    routes = []
+    for route in app.routes:
+        routes.append({
+            "path": route.path,
+            "methods": list(route.methods) if hasattr(route, 'methods') else []
+        })
+    return JSONResponse(content={"routes": routes})
+
 # ==================== 后台管理页面 ====================
 from fastapi.responses import HTMLResponse
 
@@ -634,7 +671,8 @@ if __name__ == "__main__":
         f"[bold cyan]App Store API Server[/bold cyan]\n\n"
         f"[yellow]Local Access:[/yellow]   http://localhost:{Config.PORT}\n"
         f"[yellow]Network Access:[/yellow] http://0.0.0.0:{Config.PORT}\n"
-        f"[yellow]Admin Panel:[/yellow]    http://localhost:{Config.PORT}/admin\n\n"
+        f"[yellow]Admin Panel:[/yellow]    http://localhost:{Config.PORT}/admin\n"
+        f"[yellow]Debug Routes:[/yellow]   http://localhost:{Config.PORT}/debug/routes\n\n"
         f"[green]Press Ctrl+C to stop[/green]",
         border_style="bright_blue"
     ))
