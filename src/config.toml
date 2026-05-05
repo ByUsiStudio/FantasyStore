@@ -15,7 +15,6 @@ api_base_url = "https://www.cdifit.cn/api/v4"
 client_id = "011463cd-32cc-4e83-9625-752e15fa4af8"
 client_secret = "3PdKSTBsFk5UjEzX0LJgfiHVxyNFQfUr"
 allowed_redirect_uris = [
-    "https://games.cdifit.cn/oauth.php",
     "https://your-app.com/callback",
     "http://localhost:3000/callback"
 ]
