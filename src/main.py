@@ -116,18 +116,7 @@ async def general_exception_handler(request: Request, exc: Exception):
         }
     )
 
-# 404 路由不存在
-@app.get("/{path:path}", include_in_schema=False)
-async def catch_all(path: str):
-    return JSONResponse(
-        content={
-            "code": 404,
-            "message": f"Route /{path} not found",
-            "data": {}
-        }
-    )
-
-# 根路径
+# ==================== 根路径 ====================
 @app.get("/")
 async def root():
     return JSONResponse(
@@ -217,7 +206,6 @@ async def oauth_refresh(
     })
 
 # ==================== OAuth回调 ====================
-# 修复：使用正确的 logger (log) 而不是 logger，同时支持 GET 和 POST
 @app.api_route("/api/oauth/callback", methods=["GET", "POST"])
 async def oauth_callback(
     request: Request,
@@ -227,6 +215,8 @@ async def oauth_callback(
     error_description: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
+    log.info(f"OAuth callback received - method: {request.method}, code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
+    
     # 如果是 POST 请求，尝试从表单中获取参数
     if request.method == "POST":
         try:
@@ -235,10 +225,9 @@ async def oauth_callback(
             state = state or form.get("state")
             error = error or form.get("error")
             error_description = error_description or form.get("error_description")
-        except Exception:
-            pass
-    
-    log.info(f"OAuth callback received - code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
+            log.info(f"POST form data - code: {code}, state: {state}")
+        except Exception as e:
+            log.error(f"Failed to parse POST form: {e}")
     
     if error:
         log.error(f"OAuth error: {error} - {error_description}")
@@ -249,7 +238,7 @@ async def oauth_callback(
         })
     
     if not code or not state:
-        log.error("Missing code or state parameter")
+        log.error(f"Missing code or state parameter - code: {code}, state: {state}")
         return JSONResponse(content={
             "code": 400,
             "message": "Missing code or state parameter",
@@ -262,6 +251,7 @@ async def oauth_callback(
         cached_data = oauth.token_cache.get(state)
         if not cached_data:
             log.error(f"Invalid or expired state: {state}")
+            log.info(f"Available states in cache: {list(oauth.token_cache.keys())}")
             return JSONResponse(content={
                 "code": 400,
                 "message": "Invalid or expired state",
@@ -650,9 +640,10 @@ async def list_routes():
     """调试用：列出所有已注册的路由"""
     routes = []
     for route in app.routes:
+        methods = list(route.methods) if hasattr(route, 'methods') else []
         routes.append({
             "path": route.path,
-            "methods": list(route.methods) if hasattr(route, 'methods') else []
+            "methods": methods
         })
     return JSONResponse(content={"routes": routes})
 
@@ -663,6 +654,22 @@ from fastapi.responses import HTMLResponse
 async def admin_panel():
     with open("static/admin.html", "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
+
+# ==================== 404 兜底路由（必须放在所有路由的最后！）====================
+@app.get("/{path:path}", include_in_schema=False)
+async def catch_all(path: str):
+    """捕获所有未匹配的路由，返回 404"""
+    # 如果是 API 请求，记录警告
+    if path.startswith("api/"):
+        log.warning(f"API route not found: /{path}")
+    
+    return JSONResponse(
+        content={
+            "code": 404,
+            "message": f"Route /{path} not found",
+            "data": {}
+        }
+    )
 
 if __name__ == "__main__":
     import uvicorn
