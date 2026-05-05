@@ -163,6 +163,21 @@ async def get_current_user(
     
     return user
 
+async def get_current_user_optional(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_db)
+):
+    if not credentials:
+        return None
+    
+    token = credentials.credentials
+    token_data = decode_token(token)
+    if token_data is None:
+        return None
+    
+    user = db.query(User).filter(User.id == token_data['user_id']).first()
+    return user
+
 def get_current_admin(current_user: User = Depends(get_current_user)):
     if current_user.role != UserRole.ADMIN:
         raise HTTPException(

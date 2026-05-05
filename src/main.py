@@ -34,7 +34,7 @@ from config import Config
 from database import get_db, init_db
 from models import User, App, AppVersion, Review, AppStatus, VersionStatus, UserRole, ReviewStatus
 from auth import (
-    create_access_token, get_current_user, get_current_admin,
+    create_access_token, get_current_user, get_current_user_optional, get_current_admin,
     init_oauth, get_oauth_client, verify_admin_password
 )
 from webdav_client import init_webdav_client, get_webdav_client
@@ -325,7 +325,7 @@ async def list_apps(
     limit: int = Query(100),
     category: Optional[str] = None,
     search: Optional[str] = None,
-    current_user: Optional[User] = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
     db: Session = Depends(get_db)
 ):
     if not current_user or current_user.role != UserRole.ADMIN:

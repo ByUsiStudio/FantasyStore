@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Form
+from fastapi import APIRouter, Depends, HTTPException, Query, Form, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -255,8 +255,8 @@ async def admin_get_users(
 # ==================== 统计信息 ====================
 @router.post("/statistics")
 async def admin_get_statistics(
+    request: Request,
     days: int = Query(30),
-    request = None,
     db: Session = Depends(get_db)
 ):
     verify_admin(request, db)
