@@ -16,7 +16,10 @@ security = HTTPBearer(auto_error=False)
 
 class CdifitOAuth:
     def __init__(self, config: dict):
-        self.api_base_url = config['api_base_url']
+        self.authorize_url = config['authorize_url']
+        self.token_url = config['token_url']
+        self.userinfo_url = config['userinfo_url']
+        self.refresh_url = config['refresh_url']
         self.client_id = config['client_id']
         self.client_secret = config['client_secret']
         self.allowed_redirect_uris = config['allowed_redirect_uris']
@@ -63,7 +66,7 @@ class CdifitOAuth:
             'code_challenge_method': 'S256'
         }
         
-        oauth_url = f"{self.api_base_url.replace('/api/v4', '')}session/authorize?{urllib.parse.urlencode(params)}"
+        oauth_url = f"{self.authorize_url}?{urllib.parse.urlencode(params)}"
         
         self.token_cache[local_token] = {
             'state': state,
@@ -91,7 +94,7 @@ class CdifitOAuth:
                 data["redirect_uri"] = redirect_uri
             
             response = await client.post(
-                f"{self.api_base_url}/session/oauth/token",
+                self.token_url,
                 data=data,
                 headers={"Content-Type": "application/x-www-form-urlencoded"}
             )
@@ -107,7 +110,7 @@ class CdifitOAuth:
     async def get_user_info(self, access_token: str) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{self.api_base_url}/session/oauth/userinfo",
+                self.userinfo_url,
                 headers={"Authorization": f"Bearer {access_token}"}
             )
             
@@ -123,7 +126,7 @@ class CdifitOAuth:
     async def refresh_token(self, refresh_token: str) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"{self.api_base_url}/session/token/refresh",
+                self.refresh_url,
                 json={"refresh_token": refresh_token},
                 headers={"Content-Type": "application/json"}
             )

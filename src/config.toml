@@ -11,14 +11,17 @@ avatar_path = "/avatars/"
 changelog_path = "/changelogs/"
 
 [oauth]
-api_base_url = "https://www.cdifit.cn/api/v4"
-client_id = "011463cd-32cc-4e83-9625-752e15fa4af8"
-client_secret = "3PdKSTBsFk5UjEzX0LJgfiHVxyNFQfUr"
+authorize_url = "https://www.cdifit.cn/session/authorize"
+token_url = "https://www.cdifit.cn/api/v4/session/oauth/token"
+userinfo_url = "https://www.cdifit.cn/api/v4/session/oauth/userinfo"
+refresh_url = "https://www.cdifit.cn/api/v4/session/token/refresh"
+client_id = "e604e63d-7a16-4fa0-ade6-fadc6dac9ed8"
+client_secret = "qMmIqQAJfmpS5j7yWTEZ7u5ZQU3hJO0e"
 allowed_redirect_uris = [
-    "https://your-app.com/callback",
-    "http://localhost:3000/callback"
+    "http://localhost:56320/api/oauth/callback",
+    "https://your-domain.com/api/oauth/callback"
 ]
-scope = "openid email UserInfo.Read Admin.Read offline_access"
+scope = "openid email profile UserInfo.Read"
 
 [app]
 name = "App Store API"

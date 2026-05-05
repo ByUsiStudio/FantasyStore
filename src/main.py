@@ -216,6 +216,54 @@ async def oauth_refresh(
         }
     })
 
+# ==================== OAuth回调 ====================
+@app.get("/api/oauth/callback")
+async def oauth_callback(
+    code: str = Query(...),
+    state: str = Query(...),
+    db: Session = Depends(get_db)
+):
+    oauth = get_oauth_client()
+    
+    cached_data = oauth.token_cache.get(state)
+    if not cached_data:
+        raise HTTPException(status_code=400, detail="Invalid or expired state")
+    
+    code_verifier = cached_data.get('code_verifier')
+    redirect_uri = cached_data.get('redirect_uri')
+    token_data = await oauth.exchange_code_for_token(code, code_verifier, redirect_uri)
+    user_info = await oauth.get_user_info(token_data['access_token'])
+    
+    user = create_or_update_user(db, user_info.get('id'), {
+        'username': user_info.get('username') or user_info.get('name'),
+        'email': user_info.get('email'),
+        'avatar': user_info.get('avatar')
+    })
+    
+    oauth.cache_user_token(user.id, token_data)
+    del oauth.token_cache[state]
+    
+    access_token = create_access_token(
+        data={"sub": user.id, "role": user.role.value},
+        expires_delta=timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    
+    return JSONResponse(content={
+        "code": 200,
+        "data": {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "avatar": user.avatar,
+                "role": user.role.value,
+                "created_at": user.created_at.isoformat()
+            }
+        }
+    })
+
 # ==================== 用户信息 ====================
 @app.post("/api/me")
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
