@@ -217,52 +217,110 @@ async def oauth_refresh(
     })
 
 # ==================== OAuth回调 ====================
-@app.get("/api/oauth/callback")
+@app.get("/api/oauth/callback", response_class=JSONResponse)
 async def oauth_callback(
-    code: str = Query(...),
-    state: str = Query(...),
+    request: Request,
+    code: str = Query(None),
+    state: str = Query(None),
+    error: str = Query(None),
+    error_description: str = Query(None),
     db: Session = Depends(get_db)
 ):
-    oauth = get_oauth_client()
+    logger.info(f"OAuth callback received - code: {code[:20] if code else None}, state: {state[:20] if state else None}, error: {error}")
     
-    cached_data = oauth.token_cache.get(state)
-    if not cached_data:
-        raise HTTPException(status_code=400, detail="Invalid or expired state")
+    if error:
+        logger.error(f"OAuth error: {error} - {error_description}")
+        return JSONResponse(content={
+            "code": 400,
+            "message": f"OAuth error: {error_description or error}",
+            "data": {}
+        })
     
-    code_verifier = cached_data.get('code_verifier')
-    redirect_uri = cached_data.get('redirect_uri')
-    token_data = await oauth.exchange_code_for_token(code, code_verifier, redirect_uri)
-    user_info = await oauth.get_user_info(token_data['access_token'])
+    if not code or not state:
+        logger.error("Missing code or state parameter")
+        return JSONResponse(content={
+            "code": 400,
+            "message": "Missing code or state parameter",
+            "data": {}
+        })
     
-    user = create_or_update_user(db, user_info.get('id'), {
-        'username': user_info.get('username') or user_info.get('name'),
-        'email': user_info.get('email'),
-        'avatar': user_info.get('avatar')
-    })
-    
-    oauth.cache_user_token(user.id, token_data)
-    del oauth.token_cache[state]
-    
-    access_token = create_access_token(
-        data={"sub": user.id, "role": user.role.value},
-        expires_delta=timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
-    )
-    
-    return JSONResponse(content={
-        "code": 200,
-        "data": {
-            "access_token": access_token,
-            "token_type": "bearer",
-            "user": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-                "avatar": user.avatar,
-                "role": user.role.value,
-                "created_at": user.created_at.isoformat()
+    try:
+        oauth = get_oauth_client()
+        
+        cached_data = oauth.token_cache.get(state)
+        if not cached_data:
+            logger.error(f"Invalid or expired state: {state}")
+            return JSONResponse(content={
+                "code": 400,
+                "message": "Invalid or expired state",
+                "data": {}
+            })
+        
+        code_verifier = cached_data.get('code_verifier')
+        redirect_uri = cached_data.get('redirect_uri')
+        
+        logger.info(f"Exchanging code for token, redirect_uri: {redirect_uri}")
+        token_data = await oauth.exchange_code_for_token(code, code_verifier, redirect_uri)
+        
+        if not token_data or 'access_token' not in token_data:
+            logger.error("Failed to exchange code for token")
+            return JSONResponse(content={
+                "code": 500,
+                "message": "Failed to exchange code for token",
+                "data": {}
+            })
+        
+        logger.info("Getting user info from OAuth server")
+        user_info = await oauth.get_user_info(token_data['access_token'])
+        
+        if not user_info or 'id' not in user_info:
+            logger.error("Failed to get user info")
+            return JSONResponse(content={
+                "code": 500,
+                "message": "Failed to get user info",
+                "data": {}
+            })
+        
+        logger.info(f"Creating/updating user: {user_info.get('id')}")
+        user = create_or_update_user(db, user_info.get('id'), {
+            'username': user_info.get('username') or user_info.get('name'),
+            'email': user_info.get('email'),
+            'avatar': user_info.get('avatar')
+        })
+        
+        oauth.cache_user_token(user.id, token_data)
+        del oauth.token_cache[state]
+        
+        access_token = create_access_token(
+            data={"sub": user.id, "role": user.role.value},
+            expires_delta=timedelta(minutes=Config.ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
+        
+        logger.info(f"User {user.username} logged in successfully")
+        return JSONResponse(content={
+            "code": 200,
+            "message": "success",
+            "data": {
+                "access_token": access_token,
+                "token_type": "bearer",
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "avatar": user.avatar,
+                    "role": user.role.value,
+                    "created_at": user.created_at.isoformat()
+                }
             }
-        }
-    })
+        })
+    
+    except Exception as e:
+        logger.error(f"OAuth callback error: {str(e)}", exc_info=True)
+        return JSONResponse(content={
+            "code": 500,
+            "message": f"Internal server error: {str(e)}",
+            "data": {}
+        })
 
 # ==================== 用户信息 ====================
 @app.post("/api/me")
